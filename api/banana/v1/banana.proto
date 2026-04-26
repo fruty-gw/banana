@@ -1,0 +1,196 @@
+syntax = "proto3";
+package banana.v1;
+
+import "easyp_vendor/google/api/annotations.proto";
+import "easyp_vendor/protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/fruty-gw/banana/gen/go/api/banana/v1;bananav1";
+// ─────────────────────────────────────────────
+// Swagger / OpenAPI meta
+// ─────────────────────────────────────────────
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Banana Service"
+    version: "1.0.0"
+    description: "CRUD-сервис для управления бананами"
+  }
+  schemes: HTTP
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+};
+
+// ─────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────
+
+// Ripeness — степень спелости банана.
+enum Ripeness {
+  // Значение по умолчанию, не указано.
+  RIPENESS_UNSPECIFIED = 0;
+  // Зелёный (неспелый).
+  RIPENESS_GREEN = 1;
+  // Жёлтый (спелый).
+  RIPENESS_YELLOW = 2;
+  // Коричневый (перезрелый).
+  RIPENESS_BROWN = 3;
+}
+
+// ─────────────────────────────────────────────
+// Domain message
+// ─────────────────────────────────────────────
+
+// Banana — сущность банана.
+message Banana {
+  // Уникальный идентификатор банана.
+  int64 id = 1;
+  // Очищен ли банан.
+  bool peeled = 2;
+  // Степень спелости банана.
+  Ripeness ripeness = 3;
+  // Вес банана в граммах.
+  double weight_grams = 4;
+}
+
+// ─────────────────────────────────────────────
+// Request / Response messages
+// ─────────────────────────────────────────────
+
+// --- GetBanana ---
+
+// GetBananaRequest — запрос на получение банана.
+message GetBananaRequest {
+  // ID банана (path param).
+  int64 id = 1;
+  // Степень спелости (query param).
+  Ripeness ripeness = 2;
+}
+
+// GetBananaResponse — ответ на запрос получения банана.
+message GetBananaResponse {
+  // Банан.
+  Banana banana = 1;
+}
+
+// --- UpdateBanana ---
+
+// UpdateBananaRequest — запрос на обновление банана.
+message UpdateBananaRequest {
+  // ID банана (path param).
+  int64 id = 1;
+  // Новая степень спелости (json body).
+  Ripeness ripeness = 2;
+  // Новый вес в граммах (json body).
+  double weight_grams = 3;
+  // Отметить как очищенный (json body).
+  bool peeled = 4;
+}
+
+// UpdateBananaResponse — ответ на запрос обновления банана.
+message UpdateBananaResponse {
+  // Обновлённый банан.
+  Banana banana = 1;
+}
+
+// --- DeleteBanana ---
+
+// DeleteBananaRequest — запрос на удаление банана.
+message DeleteBananaRequest {
+  // ID банана (path param).
+  int64 id = 1;
+  // Степень спелости (query param).
+  Ripeness ripeness = 2;
+}
+
+// DeleteBananaResponse — ответ на запрос удаления банана.
+message DeleteBananaResponse {
+  // Удалённый банан.
+  Banana banana = 1;
+}
+
+// --- AddBanana ---
+
+// AddBananaRequest — запрос на добавление банана.
+message AddBananaRequest {
+  // Степень спелости нового банана (json body).
+  Ripeness ripeness = 1;
+  // Вес нового банана в граммах (json body).
+  double weight_grams = 2;
+}
+
+// AddBananaResponse — ответ на запрос добавления банана.
+message AddBananaResponse {
+  // ID созданного банана.
+  int64 id = 1;
+}
+
+// ─────────────────────────────────────────────
+// Service
+// ─────────────────────────────────────────────
+
+// BananaService — сервис для управления бананами.
+service BananaService {
+  // GetBanana возвращает банан по ID и степени спелости.
+  //
+  // HTTP: GET /banana/{id}?ripeness=<ripeness>
+  rpc GetBanana(GetBananaRequest) returns (GetBananaResponse) {
+    option (google.api.http) = {
+      get: "/banana/{id}"
+      // ripeness передаётся как query-параметр автоматически
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Получить банан"
+      description: "Возвращает банан по его ID и степени спелости."
+      tags: ["Banana"]
+      parameters: {
+        headers: {
+          name: "ripeness"
+          description: "Степень спелости: green | yellow | brown"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // UpdateBanana обновляет данные банана по ID.
+  //
+  // HTTP: PUT /banana/{id}
+  rpc UpdateBanana(UpdateBananaRequest) returns (UpdateBananaResponse) {
+    option (google.api.http) = {
+      put: "/banana/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Обновить банан"
+      description: "Обновляет степень спелости, вес и статус очистки банана по его ID."
+      tags: ["Banana"]
+    };
+  }
+
+  // DeleteBanana удаляет банан по ID и степени спелости.
+  //
+  // HTTP: DELETE /banana/{id}?ripeness=<ripeness>
+  rpc DeleteBanana(DeleteBananaRequest) returns (DeleteBananaResponse) {
+    option (google.api.http) = {delete: "/banana/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Удалить банан"
+      description: "Удаляет банан по его ID и степени спелости, возвращает удалённый объект."
+      tags: ["Banana"]
+    };
+  }
+
+  // AddBanana создаёт новый банан с заданными параметрами.
+  //
+  // HTTP: POST /banana
+  rpc AddBanana(AddBananaRequest) returns (AddBananaResponse) {
+    option (google.api.http) = {
+      post: "/banana"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Добавить банан"
+      description: "Создаёт новый банан с указанной степенью спелости и весом. Возвращает присвоенный ID."
+      tags: ["Banana"]
+    };
+  }
+}
