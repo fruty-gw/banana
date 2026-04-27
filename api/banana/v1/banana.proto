@@ -89,6 +89,17 @@ message AddBananaResponse {
   int64 id = 1;
 }
 
+// ListBananasRequest — запрос на получение списка бананов.
+message ListBananasRequest {}
+
+// ListBananasResponse — ответ на запрос получения списка бананов.
+message ListBananasResponse {
+  // Список бананов.
+  repeated Banana bananas = 1;
+  // Общее количество найденных бананов.
+  int64 total = 2;
+}
+
 // BananaService — сервис для управления бананами.
 service BananaService {
   // GetBanana возвращает банан по ID и степени спелости.
@@ -122,5 +133,11 @@ service BananaService {
       post: "/banana"
       body: "*"
     };
+  }
+
+  // ListBananas возвращает список всех бананов.
+  // HTTP: GET /banana
+  rpc ListBananas(ListBananasRequest) returns (ListBananasResponse) {
+    option (google.api.http) = {get: "/banana"};
   }
 }
