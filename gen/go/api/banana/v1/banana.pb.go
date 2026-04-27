@@ -574,6 +574,98 @@ func (x *AddBananaResponse) GetId() int64 {
 	return 0
 }
 
+// ListBananasRequest — запрос на получение списка бананов.
+type ListBananasRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBananasRequest) Reset() {
+	*x = ListBananasRequest{}
+	mi := &file_api_banana_v1_banana_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBananasRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBananasRequest) ProtoMessage() {}
+
+func (x *ListBananasRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_banana_v1_banana_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBananasRequest.ProtoReflect.Descriptor instead.
+func (*ListBananasRequest) Descriptor() ([]byte, []int) {
+	return file_api_banana_v1_banana_proto_rawDescGZIP(), []int{9}
+}
+
+// ListBananasResponse — ответ на запрос получения списка бананов.
+type ListBananasResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Список бананов.
+	Bananas []*Banana `protobuf:"bytes,1,rep,name=bananas,proto3" json:"bananas,omitempty"`
+	// Общее количество найденных бананов.
+	Total         int64 `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBananasResponse) Reset() {
+	*x = ListBananasResponse{}
+	mi := &file_api_banana_v1_banana_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBananasResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBananasResponse) ProtoMessage() {}
+
+func (x *ListBananasResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_banana_v1_banana_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBananasResponse.ProtoReflect.Descriptor instead.
+func (*ListBananasResponse) Descriptor() ([]byte, []int) {
+	return file_api_banana_v1_banana_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListBananasResponse) GetBananas() []*Banana {
+	if x != nil {
+		return x.Bananas
+	}
+	return nil
+}
+
+func (x *ListBananasResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 var File_api_banana_v1_banana_proto protoreflect.FileDescriptor
 
 const file_api_banana_v1_banana_proto_rawDesc = "" +
@@ -605,17 +697,22 @@ const file_api_banana_v1_banana_proto_rawDesc = "" +
 	"\bripeness\x18\x01 \x01(\x0e2\x13.banana.v1.RipenessR\bripeness\x12!\n" +
 	"\fweight_grams\x18\x02 \x01(\x01R\vweightGrams\"#\n" +
 	"\x11AddBananaResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id*a\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"\x14\n" +
+	"\x12ListBananasRequest\"X\n" +
+	"\x13ListBananasResponse\x12+\n" +
+	"\abananas\x18\x01 \x03(\v2\x11.banana.v1.BananaR\abananas\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x03R\x05total*a\n" +
 	"\bRipeness\x12\x18\n" +
 	"\x14RIPENESS_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eRIPENESS_GREEN\x10\x01\x12\x13\n" +
 	"\x0fRIPENESS_YELLOW\x10\x02\x12\x12\n" +
-	"\x0eRIPENESS_BROWN\x10\x032\x9a\x03\n" +
+	"\x0eRIPENESS_BROWN\x10\x032\xf9\x03\n" +
 	"\rBananaService\x12\\\n" +
 	"\tGetBanana\x12\x1b.banana.v1.GetBananaRequest\x1a\x1c.banana.v1.GetBananaResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/banana/{id}\x12h\n" +
 	"\fUpdateBanana\x12\x1e.banana.v1.UpdateBananaRequest\x1a\x1f.banana.v1.UpdateBananaResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\x1a\f/banana/{id}\x12e\n" +
 	"\fDeleteBanana\x12\x1e.banana.v1.DeleteBananaRequest\x1a\x1f.banana.v1.DeleteBananaResponse\"\x14\x82\xd3\xe4\x93\x02\x0e*\f/banana/{id}\x12Z\n" +
-	"\tAddBanana\x12\x1b.banana.v1.AddBananaRequest\x1a\x1c.banana.v1.AddBananaResponse\"\x12\x82\xd3\xe4\x93\x02\f:\x01*\"\a/bananaB:Z8github.com/fruty-gw/banana/gen/go/api/banana/v1;bananav1b\x06proto3"
+	"\tAddBanana\x12\x1b.banana.v1.AddBananaRequest\x1a\x1c.banana.v1.AddBananaResponse\"\x12\x82\xd3\xe4\x93\x02\f:\x01*\"\a/banana\x12]\n" +
+	"\vListBananas\x12\x1d.banana.v1.ListBananasRequest\x1a\x1e.banana.v1.ListBananasResponse\"\x0f\x82\xd3\xe4\x93\x02\t\x12\a/bananaB:Z8github.com/fruty-gw/banana/gen/go/api/banana/v1;bananav1b\x06proto3"
 
 var (
 	file_api_banana_v1_banana_proto_rawDescOnce sync.Once
@@ -630,7 +727,7 @@ func file_api_banana_v1_banana_proto_rawDescGZIP() []byte {
 }
 
 var file_api_banana_v1_banana_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_banana_v1_banana_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_api_banana_v1_banana_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_api_banana_v1_banana_proto_goTypes = []any{
 	(Ripeness)(0),                // 0: banana.v1.Ripeness
 	(*Banana)(nil),               // 1: banana.v1.Banana
@@ -642,6 +739,8 @@ var file_api_banana_v1_banana_proto_goTypes = []any{
 	(*DeleteBananaResponse)(nil), // 7: banana.v1.DeleteBananaResponse
 	(*AddBananaRequest)(nil),     // 8: banana.v1.AddBananaRequest
 	(*AddBananaResponse)(nil),    // 9: banana.v1.AddBananaResponse
+	(*ListBananasRequest)(nil),   // 10: banana.v1.ListBananasRequest
+	(*ListBananasResponse)(nil),  // 11: banana.v1.ListBananasResponse
 }
 var file_api_banana_v1_banana_proto_depIdxs = []int32{
 	0,  // 0: banana.v1.Banana.ripeness:type_name -> banana.v1.Ripeness
@@ -652,19 +751,22 @@ var file_api_banana_v1_banana_proto_depIdxs = []int32{
 	0,  // 5: banana.v1.DeleteBananaRequest.ripeness:type_name -> banana.v1.Ripeness
 	1,  // 6: banana.v1.DeleteBananaResponse.banana:type_name -> banana.v1.Banana
 	0,  // 7: banana.v1.AddBananaRequest.ripeness:type_name -> banana.v1.Ripeness
-	2,  // 8: banana.v1.BananaService.GetBanana:input_type -> banana.v1.GetBananaRequest
-	4,  // 9: banana.v1.BananaService.UpdateBanana:input_type -> banana.v1.UpdateBananaRequest
-	6,  // 10: banana.v1.BananaService.DeleteBanana:input_type -> banana.v1.DeleteBananaRequest
-	8,  // 11: banana.v1.BananaService.AddBanana:input_type -> banana.v1.AddBananaRequest
-	3,  // 12: banana.v1.BananaService.GetBanana:output_type -> banana.v1.GetBananaResponse
-	5,  // 13: banana.v1.BananaService.UpdateBanana:output_type -> banana.v1.UpdateBananaResponse
-	7,  // 14: banana.v1.BananaService.DeleteBanana:output_type -> banana.v1.DeleteBananaResponse
-	9,  // 15: banana.v1.BananaService.AddBanana:output_type -> banana.v1.AddBananaResponse
-	12, // [12:16] is the sub-list for method output_type
-	8,  // [8:12] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	1,  // 8: banana.v1.ListBananasResponse.bananas:type_name -> banana.v1.Banana
+	2,  // 9: banana.v1.BananaService.GetBanana:input_type -> banana.v1.GetBananaRequest
+	4,  // 10: banana.v1.BananaService.UpdateBanana:input_type -> banana.v1.UpdateBananaRequest
+	6,  // 11: banana.v1.BananaService.DeleteBanana:input_type -> banana.v1.DeleteBananaRequest
+	8,  // 12: banana.v1.BananaService.AddBanana:input_type -> banana.v1.AddBananaRequest
+	10, // 13: banana.v1.BananaService.ListBananas:input_type -> banana.v1.ListBananasRequest
+	3,  // 14: banana.v1.BananaService.GetBanana:output_type -> banana.v1.GetBananaResponse
+	5,  // 15: banana.v1.BananaService.UpdateBanana:output_type -> banana.v1.UpdateBananaResponse
+	7,  // 16: banana.v1.BananaService.DeleteBanana:output_type -> banana.v1.DeleteBananaResponse
+	9,  // 17: banana.v1.BananaService.AddBanana:output_type -> banana.v1.AddBananaResponse
+	11, // 18: banana.v1.BananaService.ListBananas:output_type -> banana.v1.ListBananasResponse
+	14, // [14:19] is the sub-list for method output_type
+	9,  // [9:14] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_api_banana_v1_banana_proto_init() }
@@ -678,7 +780,7 @@ func file_api_banana_v1_banana_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_banana_v1_banana_proto_rawDesc), len(file_api_banana_v1_banana_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

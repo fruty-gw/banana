@@ -23,6 +23,7 @@ const (
 	BananaService_UpdateBanana_FullMethodName = "/banana.v1.BananaService/UpdateBanana"
 	BananaService_DeleteBanana_FullMethodName = "/banana.v1.BananaService/DeleteBanana"
 	BananaService_AddBanana_FullMethodName    = "/banana.v1.BananaService/AddBanana"
+	BananaService_ListBananas_FullMethodName  = "/banana.v1.BananaService/ListBananas"
 )
 
 // BananaServiceClient is the client API for BananaService service.
@@ -43,6 +44,9 @@ type BananaServiceClient interface {
 	// AddBanana создаёт новый банан с заданными параметрами.
 	// HTTP: POST /banana
 	AddBanana(ctx context.Context, in *AddBananaRequest, opts ...grpc.CallOption) (*AddBananaResponse, error)
+	// ListBananas возвращает список всех бананов.
+	// HTTP: GET /banana
+	ListBananas(ctx context.Context, in *ListBananasRequest, opts ...grpc.CallOption) (*ListBananasResponse, error)
 }
 
 type bananaServiceClient struct {
@@ -93,6 +97,16 @@ func (c *bananaServiceClient) AddBanana(ctx context.Context, in *AddBananaReques
 	return out, nil
 }
 
+func (c *bananaServiceClient) ListBananas(ctx context.Context, in *ListBananasRequest, opts ...grpc.CallOption) (*ListBananasResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListBananasResponse)
+	err := c.cc.Invoke(ctx, BananaService_ListBananas_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BananaServiceServer is the server API for BananaService service.
 // All implementations should embed UnimplementedBananaServiceServer
 // for forward compatibility.
@@ -111,6 +125,9 @@ type BananaServiceServer interface {
 	// AddBanana создаёт новый банан с заданными параметрами.
 	// HTTP: POST /banana
 	AddBanana(context.Context, *AddBananaRequest) (*AddBananaResponse, error)
+	// ListBananas возвращает список всех бананов.
+	// HTTP: GET /banana
+	ListBananas(context.Context, *ListBananasRequest) (*ListBananasResponse, error)
 }
 
 // UnimplementedBananaServiceServer should be embedded to have
@@ -131,6 +148,9 @@ func (UnimplementedBananaServiceServer) DeleteBanana(context.Context, *DeleteBan
 }
 func (UnimplementedBananaServiceServer) AddBanana(context.Context, *AddBananaRequest) (*AddBananaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddBanana not implemented")
+}
+func (UnimplementedBananaServiceServer) ListBananas(context.Context, *ListBananasRequest) (*ListBananasResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListBananas not implemented")
 }
 func (UnimplementedBananaServiceServer) testEmbeddedByValue() {}
 
@@ -224,6 +244,24 @@ func _BananaService_AddBanana_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BananaService_ListBananas_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBananasRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BananaServiceServer).ListBananas(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BananaService_ListBananas_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BananaServiceServer).ListBananas(ctx, req.(*ListBananasRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BananaService_ServiceDesc is the grpc.ServiceDesc for BananaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -246,6 +284,10 @@ var BananaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddBanana",
 			Handler:    _BananaService_AddBanana_Handler,
+		},
+		{
+			MethodName: "ListBananas",
+			Handler:    _BananaService_ListBananas_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

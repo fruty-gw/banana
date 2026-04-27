@@ -21,3 +21,7 @@ func (s *bananaService) DeleteBanana() {
 func (s *bananaService) AddBanana() {
 
 }
+
+func (s *bananaService) ListBananas() {
+
+}

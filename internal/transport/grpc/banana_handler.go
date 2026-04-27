@@ -11,6 +11,7 @@ type bananaService interface {
 	UpdateBanana()
 	DeleteBanana()
 	AddBanana()
+	ListBananas()
 }
 
 type BananaHandler struct {
@@ -47,5 +48,12 @@ func (h *BananaHandler) AddBanana(
 	ctx context.Context,
 	in *bananav1.AddBananaRequest,
 ) (*bananav1.AddBananaResponse, error) {
+	panic("implement me")
+}
+
+func (h *BananaHandler) ListBananas(
+	ctx context.Context,
+	in *bananav1.ListBananasRequest,
+) (*bananav1.ListBananasResponse, error) {
 	panic("implement me")
 }
